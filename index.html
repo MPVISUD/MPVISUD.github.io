@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Épices Énergie - Affichage Plein Écran</title>
+    <title>Alternance Iframe - Énergie & Météo</title>
     <style>
         html, body {
             height: 100%;
@@ -23,11 +23,31 @@
 </head>
 <body>
 
-    <iframe 
+    <iframe id="myIframe" 
         src="https://app.epices-energie.fr/kiosque/U0LAeSxhDyYzobyig93plz6u5O8"
         allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
         allowfullscreen="true">
     </iframe>
+
+    <script>
+        // Définition des URLs à alterner
+        const urls = [
+            { url: "https://app.epices-energie.fr/kiosque/U0LAeSxhDyYzobyig93plz6u5O8", duration: 75000 }, // 75s Énergie
+            { url: "https://api.wo-cloud.com/content/widget/?geoObjectKey=12975808&language=fr&region=FR&timeFormat=HH:mm&windUnit=kmh&systemOfMeasurement=metric&temperatureUnit=celsius", duration: 15000 } // 15s Météo
+        ];
+
+        let index = 0;
+
+        function changeIframe() {
+            document.getElementById("myIframe").src = urls[index].url;
+            setTimeout(() => {
+                index = (index + 1) % urls.length; // Alterne entre 0 et 1
+                changeIframe();
+            }, urls[index].duration);
+        }
+
+        changeIframe(); // Lancement de la boucle
+    </script>
 
 </body>
 </html>
