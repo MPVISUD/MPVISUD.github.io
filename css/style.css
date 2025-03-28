@@ -1,0 +1,19 @@
+html, body {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    background-color: #f8f8f8;
+}
+
+iframe {
+    width: 200%; /* Double la largeur pour compenser le zoom */
+    height: 200%; /* Double la hauteur pour compenser le zoom */
+    transform: scale(0.5); /* Applique un zoom à 50% */
+    transform-origin: top left; /* Assure un centrage correct */
+    border: none;
+    display: block;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
