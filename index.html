@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Alternance Iframe - Énergie, Météo & Vidéo</title>
+    <title>Alternance Iframe - Énergie & Météo</title>
     <style>
         html, body {
             height: 100%;
@@ -13,67 +13,46 @@
             background-color: #f8f8f8;
         }
 
-        iframe, video {
-            width: 200%;
-            height: 200%;
-            transform: scale(0.5);
-            transform-origin: top left;
-            border: none;
-            position: absolute;
-            top: 0;
-            left: 0;
-            display: none; /* Caché par défaut */
-        }
+        iframe {
+    		width: 200%; /* Double la largeur pour compenser le zoom */
+  		  height: 200%; /* Double la hauteur pour compenser le zoom */
+   		 transform: scale(0.5); /* Applique un zoom à 50% */
+   		 transform-origin: top left; /* Assure un centrage correct */
+   		 border: none;
+   		 display: block;
+    		position: absolute;
+    		top: 0;
+    		left: 0;
+	}
 
-        .visible {
-            display: block;
-        }
     </style>
 </head>
 <body>
 
-    <iframe id="myIframe"></iframe>
-    <video id="myVideo">
-        <source src="video.mp4" type="video/mp4">
-    </video>
+    <iframe id="myIframe" 
+        src="https://app.epices-energie.fr/kiosque/U0LAeSxhDyYzobyig93plz6u5O8"
+        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+        allowfullscreen="true">
+    </iframe>
 
     <script>
-        const elements = [
-            { type: "iframe", url: "https://app.epices-energie.fr/kiosque/U0LAeSxhDyYzobyig93plz6u5O8", duration: 2000 },
-            { type: "iframe", url: "https://api.wo-cloud.com/content/widget/?geoObjectKey=12975808&language=fr&region=FR&timeFormat=HH:mm&windUnit=kmh&systemOfMeasurement=metric&temperatureUnit=celsius", duration: 2000 },
-            { type: "video", duration: 30000 }
+        // Définition des URLs à alterner
+        const urls = [
+            { url: "https://app.epices-energie.fr/kiosque/U0LAeSxhDyYzobyig93plz6u5O8", duration: 75000 }, // 75s Énergie
+            { url: "https://api.wo-cloud.com/content/widget/?geoObjectKey=12975808&language=fr&region=FR&timeFormat=HH:mm&windUnit=kmh&systemOfMeasurement=metric&temperatureUnit=celsius", duration: 15000 } // 15s Météo
         ];
 
         let index = 0;
-        let iframe = document.getElementById("myIframe");
-        let video = document.getElementById("myVideo");
 
-        function changeElement() {
-            let current = elements[index];
-
-            if (current.type === "iframe") {
-                iframe.src = current.url;
-                iframe.classList.add("visible");
-                video.classList.remove("visible");
-
-                setTimeout(() => {
-                    index = (index + 1) % elements.length;
-                    changeElement();
-                }, current.duration);
-            } else if (current.type === "video") {
-                iframe.classList.remove("visible");
-                video.classList.add("visible");
-
-                video.play();
-                video.onended = () => {
-                    video.classList.remove("visible");
-                    index = (index + 1) % elements.length;
-                    changeElement();
-                };
-            }
+        function changeIframe() {
+            document.getElementById("myIframe").src = urls[index].url;
+            setTimeout(() => {
+                index = (index + 1) % urls.length; // Alterne entre 0 et 1
+                changeIframe();
+            }, urls[index].duration);
         }
 
-        changeElement();
+        changeIframe(); // Lancement de la boucle
     </script>
 
 </body>
